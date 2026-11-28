@@ -1,0 +1,50 @@
+version = 1
+
+[*]
+models-dir = /models
+flash-attn = on
+
+# --- Example chat model ---
+; [my-chat-model]
+; hf-repo = unsloth/Qwen3-8B-GGUF:Q4_K_M
+; ctx-size = 8192
+; parallel = 2
+; repeat-penalty = 1.1
+; load-on-startup = true
+
+# --- Example vision model (image input) ---
+; [my-vision-model]
+; hf-repo = ggml-org/gemma-3-4b-it-GGUF:Q4_K_M
+; ctx-size = 8192
+; load-on-startup = true
+
+# --- Example vision model with a custom mmproj ---
+; [my-vision-model-custom-mmproj]
+; hf-repo = ggml-org/gemma-3-4b-it-GGUF:Q4_K_M
+; mmproj-url = https://huggingface.co/<user>/<repo>/resolve/main/mmproj-model-f16.gguf
+; ctx-size = 8192
+; load-on-startup = true
+
+# --- Example chat model with a draft model (faster output) ---
+; [my-fast-chat-model]
+; hf-repo = unsloth/Qwen3-8B-GGUF:Q4_K_M
+; hf-repo-draft = unsloth/Qwen3-0.6B-GGUF:Q8_0
+; ctx-size = 8192
+; load-on-startup = true
+
+# --- Example model from a specific file in the repo ---
+# Use hf-file when the repo has many quants and you want one file.
+; [Inkling-2-Mini-UD-IQ3_XXS]
+; hf-repo = unsloth/Inkling-2-Mini-GGUF
+; hf-file = Mainline_Support/Inkling-2-Mini-UD-IQ3_XXS.gguf_file
+; ctx-size = 8192
+; parallel = 1
+; load-on-startup = true
+
+# --- Example embedding model ---
+; [my-embed-model]
+; hf-repo = ggml-org/bge-m3-GGUF:Q8_0
+; ctx-size = 2048
+; parallel = 1
+; embeddings = true
+; load-on-startup = true

@@ -1,0 +1,5 @@
+# Do not add models here, they are auto-discovered
+model_list: []
+
+general_settings:
+  master_key: os.environ/LITELLM_MASTER_KEY

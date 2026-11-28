@@ -15,30 +15,34 @@ services:
       timeout: 5s
       retries: 5
     networks:
-          - default
+      - default
 
   litellm:
     image: ghcr.io/berriai/litellm:main-latest
     container_name: litellm
     restart: unless-stopped
     ports:
-      - "4000:4000"
+      - "${LISTEN_ADDRESS:-0.0.0.0}:${LITELLM_PORT:-4000}:4000"
     depends_on:
       postgres:
         condition: service_healthy
+    entrypoint: ["/bin/sh", "/app/sync-models.sh"]
     env_file:
       - .env
     environment:
       - DATABASE_URL=postgresql://${POSTGRES_USER:?POSTGRES_USER is required}:${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}@postgres:5432/${POSTGRES_DB:?POSTGRES_DB is required}
-      - LITELLM_MASTER_KEY=${LITELLM_MASTER_KEY:?LITELLM_MASTER_KEY is required}
+      - LITELLM_MASTER_KEY=${LITELLM_ADMIN_PASSWORD:?LITELLM_ADMIN_PASSWORD is required}
       - STORE_MODEL_IN_DB=True
     volumes:
-      - ./config.yaml:/app/config.yaml
+      - ./sync-models.sh:/app/sync-models.sh:ro
+      - ./sync:/app/sync:ro
+      - ./config.template.yaml:/app/config.template.yaml:ro
+      - ./provider:/app/provider:ro
     command:
       - "--config"
       - "/app/config.yaml"
     networks:
-          - default
-    
+      - default
+
 volumes:
   postgres_data:

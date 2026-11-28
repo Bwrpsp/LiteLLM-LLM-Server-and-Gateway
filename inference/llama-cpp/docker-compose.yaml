@@ -5,6 +5,8 @@ services:
     restart: unless-stopped
     env_file:
       - .env
+    environment:
+      - LLAMA_CACHE=/models
     volumes:
       - ./models:/models
       - ./presets.ini:/app/presets.ini
@@ -16,12 +18,10 @@ services:
               count: all
               capabilities: [gpu]
     ports:
-      - "8080:8080"
+      - "${LISTEN_ADDRESS:-0.0.0.0}:${LLAMA_CPP_PORT:-8080}:8080"
     entrypoint: /app/llama-server
     command: >
       --models-preset /app/presets.ini
-      -t 16
-      -tb 16
       --no-warmup
       --host 0.0.0.0
       --port 8080

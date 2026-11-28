@@ -1,0 +1,39 @@
+# Inference server endpoints for LiteLLM auto-sync (litellm/sync-models.sh).
+# Copy to providers.ini and fill in real values. providers.ini is git-ignored.
+#
+# One [section] per server (llama.cpp, Basalt, ...). The section name is only a label.
+# NOTE: this file is read INSIDE the litellm container, so base_url must be
+# reachable FROM that container. `localhost` does NOT work there — use the
+# server's LAN hostname or IP.
+
+[example]
+base_url = http://example:8080/v1
+api_key = sk-change-me
+# model_prefix = example-
+# Optional per-server overrides for the generated LiteLLM model_info /
+# litellm_params. Everything else is auto-mapped from GET <base_url>/models
+# (mode, max_tokens/max_input_tokens from meta.n_ctx, supports_vision from
+# input_modalities, zero costs). Uncomment to override:
+# mode = chat                      # or: embedding
+# max_input_tokens = 131072
+# max_output_tokens = 8192
+# input_cost_per_token = 0.0
+# output_cost_per_token = 0.0
+# supports_vision = true
+# supports_function_calling = true
+# supports_parallel_function_calling = true
+# supports_response_schema = true
+# supports_system_messages = true
+# timeout = 600
+# stream_timeout = 600
+# max_retries = 2
+# tpm = 1000000
+# rpm = 1000
+
+# Basalt (inference/basalt/docker-compose.yaml) listens on host port 8081.
+[basalt]
+base_url = http://example:8081/v1
+api_key = sk-change-me
+# model_prefix = basalt-
+# Basalt /v1/models does not report the context size, so set it here.
+# max_input_tokens = 32768
